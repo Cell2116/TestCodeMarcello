@@ -78,11 +78,12 @@ const setCreateOn = () => {
 // Handle form submission
 const submitForm = async () => {
   try {
-    const response = await axios.post('http://localhost:3000/api/transactions/addData', formData.value)
-    alert('Data submitted successfully')
+    const { id, ...dataWithoutId } = formData.value; // Exclude the id field
+    const response = await axios.post('http://localhost:3000/api/transactions/addData', dataWithoutId);
+    alert('Data submitted successfully');
   } catch (error) {
-    console.error(error)
-    alert('Error submitting data')
+    console.error(error);
+    alert('Error submitting data');
   }
 };
 </script>

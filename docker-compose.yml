@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_data_test_marcello
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: postgres
+    ports:
+      - 5436:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: dockerFile
+    container_name: backend_testing
+    ports:
+      - 3000:3002
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_NAME: postgres
+      DB_PASSWORD: 12345678
+      DB_PORT: 5432
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: dockerFile
+    container_name: frontend_testing
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
+    volumes:
+      - ./Frontend:/usr/src/app
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container_testing
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5052:80"
+    depends_on:
+      - db
+volumes:
+  pgdata:

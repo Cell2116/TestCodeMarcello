@@ -1,11 +1,18 @@
 const { Pool } = require('pg');
+const dotenv = require('dotenv');
+const path = require('path');
+
+dotenv.config({
+  path: path.resolve(__dirname,'./env')
+})
 
 const pool = new Pool({
-  user: 'postgres', 
-  host: 'localhost',
-  database: 'postgres',
-  password: 'Marcello21',
-  port: 5432, 
+  user: process.env.DB_USER, 
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: parseInt(process.env.DB_PORT),
+  ssl: false 
 });
 
 pool.connect((err, client, release) => {
