@@ -1,5 +1,6 @@
 # TestCodeMarcello
-PT Inovasi Daya Solusi - (Used to be their test)
+PT Inovasi Daya Solusi - 
+(it used to be their test but they didnt open at all >_<)
 
 Author: Marcello Octavyo Anugrahanto
 
